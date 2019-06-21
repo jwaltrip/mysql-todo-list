@@ -1,4 +1,5 @@
 import React from "react"
+import axios from "axios"
 import "./TodoList.css"
 
 class TodoList extends React.Component {
@@ -8,6 +9,15 @@ class TodoList extends React.Component {
       todos: [],
       todoInput: ""
     };
+  }
+  
+  componentDidMount() {
+    axios.get("/api/todos")
+      .then(res => {
+        console.log(`all todo res data: ${JSON.stringify(res.data)}`)
+        this.setState({ todos: res.data })
+      })
+      .catch(err => console.error(err))
   }
   
   handleTextChange = (e) => {
@@ -31,7 +41,7 @@ class TodoList extends React.Component {
   
   listTodos = () => {
     return this.state.todos.map((todo, idx) => {
-      return <li key={`todo-${idx}`}>{todo} - <button onClick={() => {this.handleRemoveTask(idx)}}>X</button></li>
+      return <li key={`todo-${todo.id}`}>{todo.todoText} - <button onClick={() => {this.handleRemoveTask(idx)}}>X</button></li>
     })
   }
 

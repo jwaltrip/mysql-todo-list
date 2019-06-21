@@ -7,6 +7,7 @@ const app = express()
 
 // import routes
 // const userRoutes = require("./routes/UserRoute");
+const testDbRoute = require("./routes/TestDb")
 
 // setup middleware
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -14,6 +15,7 @@ app.use(bodyParser.json())
 
 // setup routes
 // app.use('/api/users', userRoutes);
+app.use("/api", testDbRoute)
 
 // set the backend server port
 const port = process.env.PORT || 5000
