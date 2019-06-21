@@ -1,0 +1,17 @@
+
+.todo-container {
+  width: 500px;
+  margin: 0 auto 0 auto;
+}
+
+.todo-list {
+  text-align: left;
+}
+
+.todo-input {
+  margin-right: 5px;
+}
+
+.todo-submit {
+  margin-left: 5px;
+}
