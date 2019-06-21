@@ -73,4 +73,43 @@ router.post("/todos/add", async (req, res) => {
   }
 });
 
+
+// async function to REMOVE a todo to the mysql db
+// this actually doesn't delete the todo from the db
+// but sets the isActive boolean to false
+const removeTodo = async (id) => {
+  // get the client
+  const mysql = require("mysql2/promise");
+  // create the connection
+  const connection = await mysql.createConnection({
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASS,
+    database: process.env.MYSQL_DB_NAME
+  });
+  // query database
+  const query = await connection.execute(
+    "UPDATE `todos` SET `isActive` = '0' WHERE `todos`.`id` = ?",
+    [id]
+  );
+  // end connection
+  await connection.end();
+  // return all rows from mysql db 'todos' table
+  return query;
+};
+
+// POST route to remove task from DB
+router.post("/todos/remove", async (req, res) => {
+  try {
+    const query = await removeTodo(req.body.id);
+    console.log(`remove todo query: ${query}`)
+    
+    return res.send(query)
+  } catch (e) {
+    console.error(`remove todo error: ${e}`)
+    
+    return res.sendStatus(400)
+  }
+})
+
 module.exports = router;

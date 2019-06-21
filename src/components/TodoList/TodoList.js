@@ -10,57 +10,90 @@ class TodoList extends React.Component {
       todoInput: ""
     };
   }
-  
+
   componentDidMount() {
-    this.getTodos()
+    this.getTodos();
   }
-  
+
   getTodos = () => {
-    axios.get("/api/todos")
+    axios
+      .get("/api/todos")
       .then(res => {
-        console.log(`all todo res data: ${JSON.stringify(res.data)}`)
-        this.setState({ todos: res.data })
+        console.log(`all todo res data: ${JSON.stringify(res.data)}`);
+        this.setState({ todos: res.data });
       })
-      .catch(err => console.error(err))
-  }
-  
-  handleTextChange = (e) => {
-    e.preventDefault()
-    this.setState({ todoInput: e.target.value })
-  }
-  
-  handleSubmit = (e) => {
-    e.preventDefault()
-    
+      .catch(err => console.error(err));
+  };
+
+  handleTextChange = e => {
+    e.preventDefault();
+    this.setState({ todoInput: e.target.value });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+
     // create new todo object to add to SQL DB
     const newTodo = {
       todoText: this.state.todoInput,
       isActive: 1
-    }
+    };
     // add new todo object to SQL DB
-    axios.post("/api/todos/add", newTodo)
+    axios
+      .post("/api/todos/add", newTodo)
       .then(res => {
-        console.log(`add todo post res: ${JSON.stringify(res.data)}`)
-        
-        this.getTodos()
+        console.log(`add todo post res: ${JSON.stringify(res.data)}`);
+
+        this.getTodos();
       })
-      .catch(err => console.error(err))
-    
+      .catch(err => console.error(err));
+
     // reset form field to blank
-    this.setState({ todoInput: "" })
-  }
-  
-  handleRemoveTask = (idx) => {
-    const newState = {...this.state}
-    newState.todos.splice(idx, 1)
-    this.setState(newState)
-  }
-  
+    this.setState({ todoInput: "" });
+  };
+
+  handleRemoveTask = id => {
+    // const newState = {...this.state}
+    // newState.todos.splice(idx, 1)
+    // this.setState(newState)
+
+    axios
+      .post("/api/todos/remove", { id })
+      .then(res => {
+        console.log(`remove todo id: ${id}`);
+        console.log(`remove todo id res: ${JSON.stringify(res.data)}`);
+
+        this.getTodos();
+      })
+      .catch(err => console.error(err));
+  };
+
+  // listTodos = () => {
+  //   return this.state.todos.map((todo, idx) => {
+  //     if (todo.isActive) {
+  //       return <li key={`todo-${todo.id}`}>{todo.todoText} - <button onClick={() => {this.handleRemoveTask(todo.id)}}>X</button></li>
+  //     }
+  //   })
+  // }
+
   listTodos = () => {
-    return this.state.todos.map((todo, idx) => {
-      return <li key={`todo-${todo.id}`}>{todo.todoText} - <button onClick={() => {this.handleRemoveTask(idx)}}>X</button></li>
-    })
-  }
+    return this.state.todos
+      .filter(todo => todo.isActive === 1)
+      .map(todo => {
+        return (
+          <li key={`todo-${todo.id}`}>
+            {todo.todoText} -{" "}
+            <button
+              onClick={() => {
+                this.handleRemoveTask(todo.id);
+              }}
+            >
+              X
+            </button>
+          </li>
+        );
+      });
+  };
 
   render() {
     return (
@@ -75,13 +108,13 @@ class TodoList extends React.Component {
             placeholder="Add todo item..."
             className="todo-input"
           />
-          
-          <button onSubmit={this.handleSubmit} className="todo-submit">Add Task</button>
+
+          <button onSubmit={this.handleSubmit} className="todo-submit">
+            Add Task
+          </button>
         </form>
-        
-        <ol className="todo-list">
-          {this.listTodos()}
-        </ol>
+
+        <ol className="todo-list">{this.listTodos()}</ol>
       </div>
     );
   }
