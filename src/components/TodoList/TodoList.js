@@ -12,6 +12,10 @@ class TodoList extends React.Component {
   }
   
   componentDidMount() {
+    this.getTodos()
+  }
+  
+  getTodos = () => {
     axios.get("/api/todos")
       .then(res => {
         console.log(`all todo res data: ${JSON.stringify(res.data)}`)
@@ -27,10 +31,23 @@ class TodoList extends React.Component {
   
   handleSubmit = (e) => {
     e.preventDefault()
-    this.setState(prevState => ({
-      todos: [...prevState.todos, prevState.todoInput],
-      todoInput: ""
-    }))
+    
+    // create new todo object to add to SQL DB
+    const newTodo = {
+      todoText: this.state.todoInput,
+      isActive: 1
+    }
+    // add new todo object to SQL DB
+    axios.post("/api/todos/add", newTodo)
+      .then(res => {
+        console.log(`add todo post res: ${JSON.stringify(res.data)}`)
+        
+        this.getTodos()
+      })
+      .catch(err => console.error(err))
+    
+    // reset form field to blank
+    this.setState({ todoInput: "" })
   }
   
   handleRemoveTask = (idx) => {
