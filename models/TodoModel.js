@@ -1,22 +1,22 @@
-const sequelize = require("sequelize")
+const Sequelize = require("sequelize")
 
 module.exports = sequelize.define("todo", {
   id: {
-    type: sequelize.INTEGER(11),
+    type: Sequelize.INTEGER(11),
     allowNull: false,
     autoIncrement: true,
     primaryKey: true
   },
   todoText: {
-    type: sequelize.TEXT,
+    type: Sequelize.TEXT,
     allowNull: false,
     defaultValue: ""
   },
   isActive: {
-    type: sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: 1
   },
-  createdAt: sequelize.DATE,
-  updatedAt: sequelize.DATE
+  createdAt: Sequelize.DATE,
+  updatedAt: Sequelize.DATE
 })

@@ -9,7 +9,7 @@ const app = express()
 
 // import routes
 // const userRoutes = require("./routes/UserRoute");
-const testDbRoute = require("./routes/TodosRoute")
+const testDbRoute = require("./routes/TodosRoute2")
 
 // setup middleware
 app.use(bodyParser.urlencoded({ extended: false }))

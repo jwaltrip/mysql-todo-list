@@ -66,7 +66,7 @@ class TodoList extends React.Component {
 
   listTodos = () => {
     return this.state.todos
-      .filter(todo => todo.isActive === 1)
+      .filter(todo => todo.isActive === true)
       .map(todo => {
         return (
           <li key={`todo-${todo.id}`}>
