@@ -19,18 +19,18 @@ class TodoList extends React.Component {
     axios
       .get("/api/todos")
       .then(res => {
-        console.log(`all todo res data: ${JSON.stringify(res.data)}`);
+        console.log(`all todo res data: ${JSON.stringify(res.data, null, 4)}`);
         this.setState({ todos: res.data });
       })
       .catch(err => console.error(err));
   };
 
-  handleTextChange = e => {
+  handleTextChange = (e) => {
     e.preventDefault();
     this.setState({ todoInput: e.target.value });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     // create new todo object to add to SQL DB
@@ -42,7 +42,7 @@ class TodoList extends React.Component {
     axios
       .post("/api/todos/add", newTodo)
       .then(res => {
-        console.log(`add todo post res: ${JSON.stringify(res.data)}`);
+        console.log(`add todo post res: ${JSON.stringify(res.data, null, 4)}`);
 
         this.getTodos();
       })
@@ -52,33 +52,21 @@ class TodoList extends React.Component {
     this.setState({ todoInput: "" });
   };
 
-  handleRemoveTask = id => {
-    // const newState = {...this.state}
-    // newState.todos.splice(idx, 1)
-    // this.setState(newState)
-
+  handleRemoveTask = (id) => {
     axios
       .post("/api/todos/remove", { id })
       .then(res => {
         console.log(`remove todo id: ${id}`);
-        console.log(`remove todo id res: ${JSON.stringify(res.data)}`);
+        console.log(`remove todo id res: ${JSON.stringify(res.data, null, 4)}`);
 
         this.getTodos();
       })
       .catch(err => console.error(err));
   };
 
-  // listTodos = () => {
-  //   return this.state.todos.map((todo, idx) => {
-  //     if (todo.isActive) {
-  //       return <li key={`todo-${todo.id}`}>{todo.todoText} - <button onClick={() => {this.handleRemoveTask(todo.id)}}>X</button></li>
-  //     }
-  //   })
-  // }
-
   listTodos = () => {
     return this.state.todos
-      .filter(todo => todo.isActive === 1)
+      .filter(todo => todo.isActive === true)
       .map(todo => {
         return (
           <li key={`todo-${todo.id}`}>

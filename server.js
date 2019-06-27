@@ -2,12 +2,14 @@ require("dotenv").config()
 const express = require("express")
 const bodyParser = require("body-parser")
 const path = require("path")
+// setup sequelize connection instance
+require("./database/connection")
 
 const app = express()
 
 // import routes
 // const userRoutes = require("./routes/UserRoute");
-const testDbRoute = require("./routes/TodosRoute")
+const testDbRoute = require("./routes/TodosRoute2")
 
 // setup middleware
 app.use(bodyParser.urlencoded({ extended: false }))
