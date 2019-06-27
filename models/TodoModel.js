@@ -17,10 +17,6 @@ module.exports = sequelize.define("todo", {
     allowNull: false,
     defaultValue: 1
   },
-  dateModified: {
-    type: sequelize.DATE
-  },
-  dateCreated: {
-    type: sequelize.DATE
-  }
+  createdAt: sequelize.DATE,
+  updatedAt: sequelize.DATE
 })
