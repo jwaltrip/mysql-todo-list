@@ -2,6 +2,8 @@ require("dotenv").config()
 const express = require("express")
 const bodyParser = require("body-parser")
 const path = require("path")
+// setup sequelize connection instance
+require("./database/connection")
 
 const app = express()
 
