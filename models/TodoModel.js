@@ -1,5 +1,12 @@
 const Sequelize = require("sequelize")
 
+/*
+*   NOTE: Watch the capitalization of the @sequelize variable
+*
+*    - Lowercase "sequelize" = global connection variable
+*    - Uppercase "sequelize" = imported module
+* */
+
 module.exports = sequelize.define("todo", {
   id: {
     type: Sequelize.INTEGER(11),
